@@ -3,15 +3,15 @@ import models
 from database import engine, SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
-
+from auth import router,get_current_user
 
 
 app = FastAPI()
 
 
-app.include_router()
+app.include_router(router)
 
-router = APIRouter(prefix='/users')
+
 models.Base.metadata.create_all(bind= engine)
 
 def get_db():
@@ -22,4 +22,4 @@ def get_db():
         db.close()
 
 db_dependancy = Annotated[Session, Depends(get_db)]
-
+user_dependancy = Annotated[Session, Depends(get_current_user)]
